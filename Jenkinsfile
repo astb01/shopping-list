@@ -52,7 +52,7 @@ pipeline {
 
     stage('Clean Up') {
       steps {
-        sh 'docker image prune -a --filter "until=24h"'
+        sh 'docker image prune --force -a --filter "until=24h"'
       }
     }
 
