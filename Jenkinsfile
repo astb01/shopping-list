@@ -35,6 +35,5 @@ pipeline {
         checkout scm
       }
     }
-
   }
 }
