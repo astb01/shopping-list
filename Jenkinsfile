@@ -8,7 +8,8 @@ pipeline {
   environment {
     CI = 'true'
     VERSION_NUMBER = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-    REGISTRY = 'http://localhost:5000'
+    REGISTRY = 'astb01/shoppinglist'
+    REGISTRY_CREDENTIALS = 'docker-hub'
     CONTAINER_TESTS_DIR = './test/container/'
   }
 
@@ -28,10 +29,7 @@ pipeline {
 
     stage('Build and Test') {
       steps {
-        env.NODE_ENV = "test"
-
         print "Branch: ${env.GIT_BRANCH}"
-        print "Environment set to: ${env.NODE_ENV}"
 
         sh 'node -v'
         
@@ -42,20 +40,23 @@ pipeline {
     }
 
     stage('Build Docker Image') {
-      if ("${env.GIT_BRANCH}" == "origin/master") {
-        sh 'docker build -t ${env.JOB_NAME} --no-cache .'
-        sh 'docker tag ${env.JOB_NAME} ${env.REGISTRY}/${env.JOB_NAME}'
-        sh 'docker push ${env.REGISTRY}/${env.JOB_NAME}'
-        sh 'docker rmi -f ${env.JOB_NAME} ${env.REGISTRY}/${env.JOB_NAME}'
-      } else {
-        print "No Docker image built as branch is ${env.GIT_BRANCH}"
+      steps {
+        sh 'docker build --tag ${env.REGISTRY}:${env.VERSION_NUMBER} .'
+        sh 'docker image ls'
       }
     }
 
     stage('Test Docker Image') {
       steps {
-        sh 'container-structure-test test --image  ${env.REGISTRY}/${env.JOB_NAME} ${env.CONTAINER_TESTS_DIR}/confg.json'
+        sh 'container-structure-test test --image  ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.CONTAINER_TESTS_DIR}/confg.json'
       }
     }
+
+    /*stage('Push Docker Image') {
+      steps {
+        sh 'docker tag ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest'
+        sh 'docker push ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest'
+      }
+    }*/
   }
 }
