@@ -52,7 +52,8 @@ pipeline {
 
     stage('Clean Up') {
       steps {
-        sh 'docker image prune --force -a --filter "until=24h"'
+        sh 'docker ps -aq --no-trunc -f status=exited | xargs docker rm'
+        sh 'docker images -q --filter dangling=true | xargs docker rmi'
       }
     }
 
