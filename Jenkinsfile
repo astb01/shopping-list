@@ -52,6 +52,12 @@ pipeline {
       }
     }
 
+    stage('Clean Up') {
+      steps {
+        sh 'docker image prune -a --filter "until=24h"'
+      }
+    }
+
     /*stage('Push Docker Image') {
       steps {
         sh 'docker tag ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest'
