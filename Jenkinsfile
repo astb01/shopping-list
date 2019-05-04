@@ -32,7 +32,7 @@ pipeline {
         print "Branch: ${env.GIT_BRANCH}"
 
         sh 'node -v'
-        sh 'npm install'
+        sh 'npm install && npm cache verify'
         sh 'npm test'
       }
     }
