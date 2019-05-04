@@ -42,13 +42,13 @@ pipeline {
     }
 
     stage('Build Docker Image') {
-      if (env.BRANCH_NAME == 'master') {
+      if ("${env.GIT_BRANCH}" == "origin/master") {
         sh 'docker build -t ${env.JOB_NAME} --no-cache .'
         sh 'docker tag ${env.JOB_NAME} ${env.REGISTRY}/${env.JOB_NAME}'
         sh 'docker push ${env.REGISTRY}/${env.JOB_NAME}'
         sh 'docker rmi -f ${env.JOB_NAME} ${env.REGISTRY}/${env.JOB_NAME}'
       } else {
-        print "No Docker image built as branch is ${env.BRANCH_NAME}"
+        print "No Docker image built as branch is ${env.GIT_BRANCH}"
       }
     }
 
