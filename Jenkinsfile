@@ -23,13 +23,6 @@ pipeline {
       }
     }
 
-    stage('Container Test Setup') {
-      steps {
-        sh 'curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && mkdir -p $HOME/bin && export PATH=$PATH:$HOME/bin && mv container-structure-test-linux-amd64 $HOME/bin/container-structure-test'
-        sh 'container-structure-test version'
-      }
-    }
-
     stage('Checkout') {
       steps {
         checkout scm
