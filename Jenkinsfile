@@ -32,8 +32,6 @@ pipeline {
         print "Branch: ${env.GIT_BRANCH}"
 
         sh 'node -v'
-        
-        sh 'npm prune'
         sh 'npm install'
         sh 'npm test'
       }
