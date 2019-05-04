@@ -15,17 +15,46 @@ pipeline {
   stages {
     stage('Environment') {
       steps {
-        sh 'git --version'
-        echo "Branch: ${env.BRANCH_NAME}"
-
         sh 'docker -v'
-        sh 'printenv'
+        sh 'container-structure-test version'
       }
     }
 
     stage('Checkout') {
       steps {
         checkout scm
+      }
+    }
+
+    stage('Build and Test') {
+      steps {
+        env.NODE_ENV = "test"
+
+        print "Branch: ${env.GIT_BRANCH}"
+        print "Environment set to: ${env.NODE_ENV}"
+
+        sh 'node -v'
+        
+        sh 'npm prune'
+        sh 'npm install'
+        sh 'npm test'
+      }
+    }
+
+    stage('Build Docker Image') {
+      if (env.BRANCH_NAME == 'master') {
+        sh 'docker build -t ${env.JOB_NAME} --no-cache .'
+        sh 'docker tag ${env.JOB_NAME} ${env.REGISTRY}/${env.JOB_NAME}'
+        sh 'docker push ${env.REGISTRY}/${env.JOB_NAME}'
+        sh 'docker rmi -f ${env.JOB_NAME} ${env.REGISTRY}/${env.JOB_NAME}'
+      } else {
+        print "No Docker image built as branch is ${env.BRANCH_NAME}"
+      }
+    }
+
+    stage('Test Docker Image') {
+      steps {
+        sh 'container-structure-test test --image  ${env.REGISTRY}/${env.JOB_NAME} ${env.CONTAINER_TESTS_DIR}/confg.json'
       }
     }
   }
