@@ -25,11 +25,11 @@ pipeline {
       }
     }
 
-    stage('Checkout') {
+    /*stage('Checkout') {
       steps {
         checkout scm
       }
-    }
+    }*/
 
     stage('Build and Test') {
       steps {
