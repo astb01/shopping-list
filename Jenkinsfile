@@ -53,7 +53,7 @@ pipeline {
 
     stage('Push Docker Image') {
       steps {
-        sh 'docker push ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest'
+        sh "docker push ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest"
       }
     }
 
