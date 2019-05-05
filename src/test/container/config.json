@@ -17,7 +17,7 @@
     }
   ],
   "metadataTest": {
-    "exposedPorts": ["3000"],
+    "exposedPorts": [],
     "entrypoint": [],
     "cmd": ["npm", "start"],
     "workdir": "/usr/src/app"
