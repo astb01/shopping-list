@@ -46,7 +46,7 @@ pipeline {
 
     stage('Test Docker Image') {
       steps {
-        sh "container-structure-test test --image  ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.CONTAINER_TESTS_DIR}/confg.json"
+        sh "container-structure-test test --image  ${env.REGISTRY}:${env.VERSION_NUMBER} --config ${env.CONTAINER_TESTS_DIR}/confg.json"
       }
     }
 
