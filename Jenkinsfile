@@ -10,7 +10,7 @@ pipeline {
     VERSION_NUMBER = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
     REGISTRY = 'astb01/shoppinglist'
     REGISTRY_CREDENTIALS = 'docker-hub'
-    CONTAINER_TESTS_DIR = './test/container/'
+    CONTAINER_TESTS_DIR = './src/test/container'
   }
 
   stages {
