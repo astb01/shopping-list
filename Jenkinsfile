@@ -51,11 +51,11 @@ pipeline {
       }
     }
 
-    /*stage('Push Docker Image') {
+    stage('Push Docker Image') {
       steps {
         sh 'docker push ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest'
       }
-    }*/
+    }
 
     stage('Clean Up') {
       steps {
