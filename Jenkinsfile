@@ -25,12 +25,6 @@ pipeline {
       }
     }
 
-    /*stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }*/
-
     stage('Build and Test') {
       steps {
         print "Branch: ${env.GIT_BRANCH}"
