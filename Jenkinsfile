@@ -5,6 +5,10 @@ pipeline {
     nodejs "node"
   }
 
+  options {
+    buildDiscarder(logRotator(daysToKeepStr: '1', numToKeepStr: '3'))
+  }
+
   environment {
     CI = 'true'
     VERSION_NUMBER = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
