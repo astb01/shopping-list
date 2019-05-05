@@ -40,7 +40,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         sh "docker build --tag ${env.REGISTRY}:${env.VERSION_NUMBER} ."
-        sh "docker image ls"
+        sh "docker tag ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest"
       }
     }
 
@@ -51,17 +51,16 @@ pipeline {
       }
     }
 
+    /*stage('Push Docker Image') {
+      steps {
+        sh 'docker push ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest'
+      }
+    }*/
+
     stage('Clean Up') {
       steps {
         sh 'docker system prune --force'
       }
     }
-
-    /*stage('Push Docker Image') {
-      steps {
-        sh 'docker tag ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest'
-        sh 'docker push ${env.REGISTRY}:${env.VERSION_NUMBER} ${env.REGISTRY}:latest'
-      }
-    }*/
   }
 }
