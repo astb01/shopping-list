@@ -10,7 +10,7 @@ pipeline {
     VERSION_NUMBER = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
     REGISTRY = 'astb01/shoppinglist'
     REGISTRY_CREDENTIALS = 'docker-hub'
-    CONTAINER_TESTS_DIR = './src/test/container'
+    CONTAINER_TESTS_DIR = '${env.WORKSPACE}/src/test/container'
   }
 
   stages {
@@ -46,6 +46,7 @@ pipeline {
 
     stage('Test Docker Image') {
       steps {
+        sh "pwd"
         sh "container-structure-test test --image  ${env.REGISTRY}:${env.VERSION_NUMBER} --config ${env.CONTAINER_TESTS_DIR}/confg.json"
       }
     }
