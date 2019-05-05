@@ -37,8 +37,7 @@ pipeline {
 
     stage('Lint Docker') {
       steps {
-        sh "docker pull hadolint/hadolint:latest-debian"
-        sh "hadolint --ignore DL4006 Dockerfile"
+        sh "docker run --rm -i hadolint/hadolint hadolint --ignore DL4006 - < Dockerfile"
       }
     }
 
