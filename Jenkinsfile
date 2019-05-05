@@ -53,8 +53,7 @@ pipeline {
 
     stage('Clean Up') {
       steps {
-        sh 'docker ps -aq --no-trunc -f status=exited | xargs docker rm'
-        sh 'docker images -q --filter dangling=true | xargs docker rmi'
+        sh 'docker system prune --force'
       }
     }
 
