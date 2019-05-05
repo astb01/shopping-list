@@ -52,7 +52,7 @@ pipeline {
 
     stage('Push Docker Image') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'docker-hubPassword', usernameVariable: 'docker-hubUser')]) {
+        withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
           sh "docker push ${env.REGISTRY}:${env.VERSION_NUMBER}"
           sh "docker push ${env.REGISTRY}:latest"
