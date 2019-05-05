@@ -13,6 +13,8 @@ pipeline {
     CONTAINER_TESTS_DIR = "${env.WORKSPACE}/src/test/container"
   }
 
+  def app
+
   stages {
     stage('Environment') {
       steps {
@@ -38,9 +40,7 @@ pipeline {
     }
 
     stage('Build Docker Image') {
-      steps {
-        sh "docker build --tag ${env.REGISTRY}:${env.VERSION_NUMBER} --tag ${env.REGISTRY}:latest ."
-      }
+        app = docker.build("${env.REGISTRY}")
     }
 
     stage('Test Docker Image') {
@@ -51,9 +51,13 @@ pipeline {
     }
 
     stage('Push Docker Image') {
-      steps {
-        sh "docker push ${env.REGISTRY}:${env.VERSION_NUMBER}"
-        sh "docker push ${env.REGISTRY}:latest"
+      shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+      echo "Using commit hash ${shortCommit}"
+
+      docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
+        app.push("${env.BUILD_NUMBER}")
+        app.push(shortCommit)
+        app.push("latest")
       }
     }
 
