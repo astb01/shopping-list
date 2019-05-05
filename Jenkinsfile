@@ -35,6 +35,12 @@ pipeline {
       }
     }
 
+    stage('Lint Docker') {
+      steps {
+        sh "docker run --rm -i hadolint/hadolint < Dockerfile"
+      }
+    }
+
     stage('Build Docker Image') {
       steps {
         sh "docker build --tag ${env.REGISTRY}:${env.VERSION_NUMBER} --tag ${env.REGISTRY}:latest ."
