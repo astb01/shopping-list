@@ -10,6 +10,8 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json /usr/src/app/package.json
 COPY yarn.lock /usr/src/app/yarn.lock
 
+COPY . /usr/src/app
+
 RUN yarn install --pure-lockfile
 RUN yarn global add react-scripts@3.0.0
 
