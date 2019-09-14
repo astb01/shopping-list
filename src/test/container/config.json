@@ -15,11 +15,5 @@
       "shouldExist": true,
       "permissions": "-rw-r--r--"
     }
-  ],
-  "metadataTest": {
-    "exposedPorts": [],
-    "entrypoint": [],
-    "cmd": ["npm", "start"],
-    "workdir": "/usr/src/app"
-  }
+  ]
 }
